@@ -1,12 +1,21 @@
 // @ts-check
 import { defineConfig, envField } from 'astro/config';
 import svelte from '@astrojs/svelte';
+import sitemap from '@astrojs/sitemap';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://levnemytivyloh.cz',
   build: { inlineStylesheets: 'always' },
-  integrations: [svelte()],
+  integrations: [svelte(), sitemap({
+    i18n: {
+      defaultLocale: 'cs',
+      locales: {
+        cs: 'cs-CZ',
+        en: 'en-US',
+      },
+    },
+  })],
   adapter: cloudflare({
     platformProxy: { enabled: true },
     imageService: 'compile',

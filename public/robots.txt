@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://levnemytivyloh.cz/sitemap-index.xml

@@ -1,14 +1,14 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import WeatherWidget from '../components/WeatherWidget.astro';
-import Footer from '../components/Footer.astro';
-import CookieConsent from '../components/CookieConsent.svelte';
-import { t } from '../i18n/translations';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import WeatherWidget from '../../components/WeatherWidget.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.svelte';
+import { t } from '../../i18n/translations';
 
-const lang = 'cs' as const;
+const lang = 'en' as const;
 const i18n = t(lang);
-const title = 'Kontakty – Levné mytí výloh – Praha – Úklidové a čistící práce';
+const title = 'Contacts – Affordable Window Cleaning – Prague – Cleaning Services';
 ---
 
 <BaseLayout title={title} description={i18n.seoDefaultDescription} lang={lang}>
@@ -48,7 +48,7 @@ const title = 'Kontakty – Levné mytí výloh – Praha – Úklidové a čist
 
         <aside class="contacts-sidebar">
           <a href="/images/letak.pdf" target="_blank" rel="noopener">
-            <img src="/images/letak-preview.jpg" alt="Alabastr Clean - Úklidový servis" width="248" height="503" loading="lazy" class="sidebar-brochure">
+            <img src="/images/letak-preview.jpg" alt="Alabastr Clean - Cleaning Services" width="248" height="503" loading="lazy" class="sidebar-brochure">
           </a>
           <p class="sidebar-label">{i18n.sidebarBrochureLabel}</p>
           <div class="sidebar-weather">

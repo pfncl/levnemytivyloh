@@ -4,15 +4,16 @@
     price: string;
     popupContent: string;
     features: string[];
+    buttonLabel?: string;
   }
 
-  let { title, price, popupContent, features }: Props = $props();
+  let { title, price, popupContent, features, buttonLabel = 'Objednejte teď' }: Props = $props();
 </script>
 
 <div class="pricing-card">
   <h3 class="pricing-title">{title}</h3>
   <p class="pricing-price">{price}</p>
-  <button type="button" class="btn-order" data-open-modal="order-form">Objednejte teď</button>
+  <button type="button" class="btn-order" data-open-modal="order-form">{buttonLabel}</button>
   <p class="pricing-description">{@html popupContent}</p>
   <div class="pricing-features">
     {#each features as feature}

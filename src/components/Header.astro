@@ -10,53 +10,48 @@ interface Props {
 
 const { lang = 'cs', currentPage = '' } = Astro.props;
 const i18n = t(lang);
+const homeHref = lang === 'en' ? '/en/' : '/';
 
 const navItems = [
-  { href: '/', label: 'O nás', id: 'home' },
-  { href: '/objednavkovy-formular/', label: 'Objednávkový formulář', id: 'formular' },
-  { href: '/portfolio-sluzeb/', label: 'Naše reference', id: 'reference' },
-  { href: '/kontakty/', label: 'Kontakty', id: 'kontakty' },
+  { href: homeHref, label: i18n.navAbout, id: 'home' },
+  { href: lang === 'en' ? '/en/order-form/' : '/objednavkovy-formular/', label: i18n.navOrderForm, id: 'formular' },
+  { href: lang === 'en' ? '/en/portfolio/' : '/portfolio-sluzeb/', label: i18n.navReferences, id: 'reference' },
+  { href: lang === 'en' ? '/en/contacts/' : '/kontakty/', label: i18n.navContacts, id: 'kontakty' },
 ];
 ---
 
 <header class="header">
-  <div class="top-bar">
-    <div class="top-bar-inner">
-      <div class="top-bar-left">
-        <span class="icon-phone top-bar-icon"></span>
-        <span>tel: <a href="tel:775351116">775 351 116</a> nebo tel: <a href="tel:608820647">608 820 647</a></span>
-        <span class="top-bar-separator"></span>
-        <span class="icon-paper-plane-light top-bar-icon"></span>
-        <a href="mailto:info@levnemytivyloh.cz">info@levnemytivyloh.cz</a>
-      </div>
-      <div class="top-bar-right">
-        <a href="https://www.facebook.com/pages/Alabastr-Clean/537888146306354" class="top-bar-social fb" target="_blank" rel="noopener nofollow" aria-label="Facebook">
-          <span class="icon-iconmonstr-facebook-1"></span>
-        </a>
-        <a href="mailto:info@levnemytivyloh.cz" class="top-bar-social mail" aria-label="E-mail">
-          <span class="icon-paper-plane-light"></span>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <div class="header-main">
     <div class="header-row">
       <div class="header-logo">
-        <a href="/">
+        <a href={homeHref}>
           <img src="/images/logo_levnemytivyloh.png" alt="Levné mytí výloh – Praha – Úklidové a čistící práce" width="193" height="73">
         </a>
       </div>
 
-      <nav class="header-nav hide-mobile">
-        <ul>
-          {navItems.map((item) => (
-            <li class:list={[{ active: currentPage === item.id }]}>
-              <a href={item.href}>{item.label}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <div class="header-right hide-mobile">
+        <nav class="header-nav">
+          <ul>
+            {navItems.map((item) => (
+              <li class:list={[{ active: currentPage === item.id }]}>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="header-icons">
+          <a href="https://www.facebook.com/pages/Alabastr-Clean/537888146306354" class="header-icon fb-icon" target="_blank" rel="noopener nofollow" aria-label="Facebook">
+            <span class="icon-iconmonstr-facebook-1"></span>
+          </a>
+          <a href="/" class:list={['header-icon flag-icon', { dimmed: lang === 'cs' }]} aria-label="Česky">
+            <svg viewBox="0 0 24 24" width="24" height="24"><clipPath id="flagClipCs"><circle cx="12" cy="12" r="11"/></clipPath><g clip-path="url(#flagClipCs)"><rect y="0" width="24" height="12" fill="#fff"/><rect y="12" width="24" height="12" fill="#d7141a"/><polygon points="0,0 12,12 0,24" fill="#11457e"/></g><circle cx="12" cy="12" r="11" fill="none" stroke="#ccc" stroke-width="0.5"/></svg>
+          </a>
+          <a href="/en/" class:list={['header-icon flag-icon', { dimmed: lang === 'en' }]} aria-label="English">
+            <svg viewBox="0 0 24 24" width="24" height="24"><clipPath id="flagClipEn"><circle cx="12" cy="12" r="11"/></clipPath><g clip-path="url(#flagClipEn)"><rect width="24" height="24" fill="#012169"/><path d="M0,0 L24,24 M24,0 L0,24" stroke="#fff" stroke-width="4"/><path d="M0,0 L24,24 M24,0 L0,24" stroke="#C8102E" stroke-width="2"/><path d="M12,0 V24 M0,12 H24" stroke="#fff" stroke-width="6"/><path d="M12,0 V24 M0,12 H24" stroke="#C8102E" stroke-width="3.5"/></g><circle cx="12" cy="12" r="11" fill="none" stroke="#ccc" stroke-width="0.5"/></svg>
+          </a>
+        </div>
+      </div>
 
       <div class="header-mobile show-mobile-only">
         <MobileMenu client:idle lang={lang} />
@@ -66,79 +61,6 @@ const navItems = [
 </header>
 
 <style>
-  .top-bar {
-    background-color: var(--color-dark);
-    color: #ccc;
-    font-size: 12px;
-    padding: 6px 0;
-  }
-
-  .top-bar-inner {
-    max-width: var(--container-max-width);
-    margin: 0 auto;
-    padding: 0 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .top-bar-left {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex-wrap: wrap;
-  }
-
-  .top-bar-left a {
-    color: #ccc;
-    text-decoration: none;
-  }
-
-  .top-bar-left a:hover {
-    color: #fff;
-  }
-
-  .top-bar-icon {
-    font-size: 14px;
-    margin-right: 2px;
-  }
-
-  .top-bar-separator {
-    display: inline-block;
-    width: 12px;
-  }
-
-  .top-bar-right {
-    display: flex;
-    gap: 6px;
-  }
-
-  .top-bar-social {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 3px;
-    color: #ccc;
-    background: rgba(255,255,255,0.1);
-    text-decoration: none;
-    font-size: 13px;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .top-bar-social:hover {
-    color: #fff;
-  }
-
-  .top-bar-social.fb:hover {
-    background: #1877F2;
-  }
-
-  .top-bar-social.mail:hover {
-    background: #dd4b39;
-  }
-
   .header-main {
     background-color: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -161,6 +83,12 @@ const navItems = [
     max-width: 193px;
     height: auto;
     padding: 23px 0 27px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1em;
   }
 
   .header-nav ul {
@@ -188,14 +116,51 @@ const navItems = [
     color: var(--color-primary-border);
   }
 
+  .header-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .fb-icon {
+    background: #1877F2;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .fb-icon:hover {
+    opacity: 0.8;
+  }
+
+  .flag-icon {
+    background: none;
+    padding: 0;
+  }
+
+  .flag-icon.dimmed {
+    opacity: 0.4;
+  }
+
+  .flag-icon:hover {
+    opacity: 1;
+  }
+
   .header-mobile {
     margin-left: auto;
   }
 
   @media (max-width: 900px) {
-    .top-bar-left {
-      font-size: 11px;
-    }
     .header-nav li a {
       padding: 1em 0.7em;
       font-size: 12px;
@@ -203,9 +168,6 @@ const navItems = [
   }
 
   @media (max-width: 767px) {
-    .top-bar {
-      display: none;
-    }
     .header-logo img {
       max-width: 150px;
       padding: 15px 0;

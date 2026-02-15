@@ -82,9 +82,9 @@ const jsonLd = {
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <Header lang={lang} currentPage="home" />
   <main>
-    <HeroSection />
-    <AboutSection />
-    <ServicesSection />
+    <HeroSection lang={lang} />
+    <AboutSection lang={lang} />
+    <ServicesSection lang={lang} />
   </main>
   <Footer />
 

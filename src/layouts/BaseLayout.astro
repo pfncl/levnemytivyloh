@@ -46,19 +46,32 @@ const { description = i18n.seoDefaultDescription } = Astro.props;
   />
 
   <ClientRouter />
-  <script is:inline src="https://elfsightcdn.com/platform.js" async></script>
   <slot name="head" />
 </head>
 <body>
   <div class="body-wrap">
     <slot />
   </div>
-  <script>
-    document.addEventListener('astro:page-load', () => {
-      if (window.eapps) {
-        window.eapps.initWidgets();
-      }
-    });
+  <script is:inline data-astro-rerun>
+    (function() {
+      // Remove stale Elfsight portal elements from previous page
+      document.querySelectorAll('[id*="eapps"]').forEach(function(el) { el.remove(); });
+
+      // Only load if there's a widget on this page
+      var widget = document.querySelector('[class*="elfsight-app-"]');
+      if (!widget) return;
+
+      // Remove old platform script and global state
+      var oldScript = document.querySelector('script[src*="elfsight"]');
+      if (oldScript) oldScript.remove();
+      if (window.eapps) delete window.eapps;
+
+      // Re-inject platform.js fresh
+      var script = document.createElement('script');
+      script.src = 'https://static.elfsight.com/platform/platform.js';
+      script.async = true;
+      document.head.appendChild(script);
+    })();
   </script>
 </body>
 </html>

@@ -7,6 +7,7 @@
 
   let { lang = 'cs' }: Props = $props();
   const i18n = $derived(t(lang));
+  const homeHref = $derived(lang === 'en' ? '/en/' : '/');
 
   let open = $state(false);
 
@@ -33,15 +34,24 @@
         <span class="icon-cancel"></span>
       </button>
 
-      <a href="/" class="mobile-logo">
+      <a href={homeHref} class="mobile-logo">
         <img src="/images/logo_levnemytivyloh.png" alt="Levné mytí výloh" width="193" height="73">
       </a>
 
       <div class="mobile-nav">
-        <a href="/" class="mobile-nav-link" onclick={close}>O nás</a>
-        <a href="/objednavkovy-formular/" class="mobile-nav-link" onclick={close}>Objednávkový formulář</a>
-        <a href="/portfolio-sluzeb/" class="mobile-nav-link" onclick={close}>Naše reference</a>
-        <a href="/kontakty/" class="mobile-nav-link" onclick={close}>Kontakty</a>
+        <a href={homeHref} class="mobile-nav-link" onclick={close}>{i18n.navAbout}</a>
+        <a href={lang === 'en' ? '/en/order-form/' : '/objednavkovy-formular/'} class="mobile-nav-link" onclick={close}>{i18n.navOrderForm}</a>
+        <a href={lang === 'en' ? '/en/portfolio/' : '/portfolio-sluzeb/'} class="mobile-nav-link" onclick={close}>{i18n.navReferences}</a>
+        <a href={lang === 'en' ? '/en/contacts/' : '/kontakty/'} class="mobile-nav-link" onclick={close}>{i18n.navContacts}</a>
+      </div>
+
+      <div class="mobile-flags">
+        <a href="/" class="mobile-flag" class:dimmed={lang === 'cs'} aria-label="Česky" onclick={close}>
+          <svg viewBox="0 0 24 24" width="28" height="28"><clipPath id="mFlagCs"><circle cx="12" cy="12" r="11"/></clipPath><g clip-path="url(#mFlagCs)"><rect y="0" width="24" height="12" fill="#fff"/><rect y="12" width="24" height="12" fill="#d7141a"/><polygon points="0,0 12,12 0,24" fill="#11457e"/></g><circle cx="12" cy="12" r="11" fill="none" stroke="#ccc" stroke-width="0.5"/></svg>
+        </a>
+        <a href="/en/" class="mobile-flag" class:dimmed={lang === 'en'} aria-label="English" onclick={close}>
+          <svg viewBox="0 0 24 24" width="28" height="28"><clipPath id="mFlagEn"><circle cx="12" cy="12" r="11"/></clipPath><g clip-path="url(#mFlagEn)"><rect width="24" height="24" fill="#012169"/><path d="M0,0 L24,24 M24,0 L0,24" stroke="#fff" stroke-width="4"/><path d="M0,0 L24,24 M24,0 L0,24" stroke="#C8102E" stroke-width="2"/><path d="M12,0 V24 M0,12 H24" stroke="#fff" stroke-width="6"/><path d="M12,0 V24 M0,12 H24" stroke="#C8102E" stroke-width="3.5"/></g><circle cx="12" cy="12" r="11" fill="none" stroke="#ccc" stroke-width="0.5"/></svg>
+        </a>
       </div>
 
       <div class="mobile-actions">
@@ -157,6 +167,26 @@
     background: rgba(255, 255, 255, 0.1);
     text-align: center;
     justify-content: center;
+  }
+
+  .mobile-flags {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .mobile-flag {
+    display: flex;
+    align-items: center;
+    transition: opacity 0.2s;
+  }
+
+  .mobile-flag.dimmed {
+    opacity: 0.4;
+  }
+
+  .mobile-flag:hover {
+    opacity: 1;
   }
 
   .mobile-social {

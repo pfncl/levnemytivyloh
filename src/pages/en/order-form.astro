@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import OrderForm from '../../components/OrderForm.svelte';
+import WeatherWidget from '../../components/WeatherWidget.astro';
+import CookieConsent from '../../components/CookieConsent.svelte';
+const lang = 'en' as const;
+const title = 'Order Form – Affordable Window Cleaning – Prague – Cleaning Services';
+---
+
+<BaseLayout title={title} description="Order professional window and storefront cleaning in Prague. Fill in the order form and we will contact you as soon as possible." lang={lang}>
+  <Header lang={lang} currentPage="formular" />
+  <main class="form-page">
+    <div class="form-layout">
+      <div class="form-content">
+        <OrderForm client:idle lang={lang} />
+      </div>
+
+      <aside class="form-sidebar">
+        <a href="/images/letak.pdf" target="_blank" rel="noopener">
+          <img src="/images/letak-preview.jpg" alt="Alabastr Clean - Cleaning Services" width="248" height="503" loading="lazy" class="sidebar-brochure">
+        </a>
+        <p class="sidebar-label">Download our brochure</p>
+        <div class="sidebar-weather">
+          <WeatherWidget />
+        </div>
+      </aside>
+    </div>
+  </main>
+  <Footer />
+
+  <CookieConsent client:idle lang={lang} />
+</BaseLayout>
+
+<style>
+  .form-page {
+    padding: var(--section-gap) 15px;
+  }
+
+  .form-layout {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3em;
+    align-items: start;
+  }
+
+  .sidebar-brochure {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+  }
+
+  .sidebar-brochure:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebar-label {
+    font-size: 14px;
+    color: #888;
+    margin-top: 0.5em;
+    text-align: center;
+  }
+
+  .sidebar-weather {
+    margin-top: 2em;
+  }
+
+  @media (max-width: 767px) {
+    .form-layout {
+      grid-template-columns: 1fr;
+      gap: 2em;
+    }
+
+    .form-sidebar {
+      text-align: center;
+    }
+
+    .sidebar-brochure {
+      max-width: 250px;
+    }
+  }
+</style>

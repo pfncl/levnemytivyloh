@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.svelte';
+import OrderFormModal from '../../components/OrderFormModal.svelte';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout title="Privacy Policy – Affordable Window Cleaning" lang={lang}>
+  <Header lang={lang} />
+  <main>
+    <div class="content-wrap content-page">
+      <h1>Privacy Policy</h1>
+
+      <h2>Who we are</h2>
+      <p>Our website address is: <a href="https://levnemytivyloh.cz">https://levnemytivyloh.cz</a>.</p>
+
+      <h2>What personal data we collect and why</h2>
+
+      <h3>Contact forms</h3>
+      <p>Through the order form on our website, we collect your name, phone number, email address and address for the service. We use this data exclusively to process and fulfill your order.</p>
+
+      <h3>Cookies</h3>
+      <p>Our website uses technical cookies necessary for the proper functioning of the site. We also use the Cloudflare Turnstile service to protect forms against spam, which may set its own cookies.</p>
+
+      <h3>Embedded content from other websites</h3>
+      <p>Pages may contain embedded content (such as videos, images, maps, etc.). Embedded content from other websites behaves in the same way as if you visited the respective website directly.</p>
+      <p>These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with this embedded content.</p>
+
+      <h2>Who we share your data with</h2>
+      <p>We do not share your personal data with third parties except where necessary for providing the service (e.g., payment processing) or where required by law.</p>
+
+      <h2>How long we retain your data</h2>
+      <p>We retain order data for the period necessary to fulfill legal obligations (especially accounting and tax), usually for 10 years from the date of the order.</p>
+
+      <h2>What rights you have</h2>
+      <p>You have the right to request access to your personal data, its correction or deletion. You can also request restriction of processing or object to the processing of your personal data. To exercise these rights, please contact us using the contact details on our website.</p>
+
+      <h2>Where we send your data</h2>
+      <p>Your data may be processed through third-party services (e.g., Cloudflare), whose servers may be located outside the European Union. These services comply with GDPR requirements for personal data protection.</p>
+    </div>
+  </main>
+  <Footer />
+
+  <OrderFormModal client:idle lang={lang} />
+  <CookieConsent client:idle lang={lang} />
+</BaseLayout>

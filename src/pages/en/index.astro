@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import AboutSection from '../../components/AboutSection.astro';
+import ServicesSection from '../../components/ServicesSection.astro';
+import OrderFormModal from '../../components/OrderFormModal.svelte';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.svelte';
+import { t } from '../../i18n/translations';
+
+const lang = 'en' as const;
+const i18n = t(lang);
+---
+
+<BaseLayout title={i18n.seoTitle} description={i18n.seoDescription} lang={lang}>
+  <Header lang={lang} currentPage="home" />
+  <main>
+    <HeroSection lang={lang} />
+    <AboutSection lang={lang} />
+    <ServicesSection lang={lang} />
+  </main>
+  <Footer />
+
+  <OrderFormModal client:idle lang={lang} />
+  <CookieConsent client:idle lang={lang} />
+</BaseLayout>

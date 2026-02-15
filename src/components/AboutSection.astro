@@ -1,11 +1,19 @@
 ---
-const description = 'Jsme úklidová firma působící na trhu servisních úklidů, mytí oken a výloh již dvacet let. Naši profesionální pracovníci jsou vyškoleni na mytí běžně znečistěných prosklených ploch, mytí výloh a oken po malířských, řemeslnických, stavebních i jiných pracích, odstraňujeme reklamní polepy, loga apod. Samozřejmostí je mytí oken včetně rámů, vnitřních i venkovních parapetů. Mytí provádíme profesionální technikou značky UNGER, používáme ekologické mycí prostředky. Ke každé zakázce přistupujeme s nejvyšší zodpovědností, naši pracovníci jsou dobře pojištěni na případnou škodu způsobenou při práci.';
+import type { Locale } from '../i18n/translations';
+import { t } from '../i18n/translations';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'cs' } = Astro.props;
+const i18n = t(lang);
 ---
 
 <section class="about">
   <div class="about-inner">
-    <h2 class="about-title">Představení firmy</h2>
-    <p class="about-text">{description}</p>
+    <h2 class="about-title">{i18n.aboutTitle}</h2>
+    <p class="about-text">{i18n.aboutText}</p>
   </div>
 </section>
 

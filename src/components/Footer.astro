@@ -3,7 +3,14 @@
 
 <footer class="footer">
   <div class="footer-inner">
-    <p class="footer-text">Alabastr Clean, s. r. o. - úklidové a čistící práce</p>
+    <div class="footer-row">
+      <p class="footer-text">Alabastr Clean, s. r. o. - úklidové a čistící práce</p>
+      <div class="footer-contact">
+        <span><span class="icon-phone footer-icon"></span> <a href="tel:775351116">775 351 116</a></span>
+        <span><span class="icon-phone footer-icon"></span> <a href="tel:608820647">608 820 647</a></span>
+        <span><span class="icon-paper-plane-light footer-icon"></span> <a href="mailto:info@levnemytivyloh.cz">info@levnemytivyloh.cz</a></span>
+      </div>
+    </div>
   </div>
 </footer>
 
@@ -19,8 +26,51 @@
     margin: 0 auto;
   }
 
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8em;
+  }
+
   .footer-text {
     margin: 0;
     font-size: 13px;
+  }
+
+  .footer-contact {
+    display: flex;
+    align-items: center;
+    gap: 1.2em;
+    font-size: 13px;
+  }
+
+  .footer-contact a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-contact a:hover {
+    color: #fff;
+  }
+
+  .footer-icon {
+    font-size: 12px;
+    margin-right: 2px;
+  }
+
+  @media (max-width: 600px) {
+    .footer-row {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.6em;
+    }
+
+    .footer-contact {
+      flex-direction: column;
+      gap: 0.4em;
+    }
   }
 </style>

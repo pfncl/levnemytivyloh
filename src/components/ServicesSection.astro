@@ -1,5 +1,14 @@
 ---
 import PricingCard from './PricingCard.svelte';
+import type { Locale } from '../i18n/translations';
+import { t } from '../i18n/translations';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'cs' } = Astro.props;
+const i18n = t(lang);
 
 interface PricingItem {
   title: string;
@@ -10,22 +19,22 @@ interface PricingItem {
 
 const pricing: PricingItem[] = [
   {
-    title: 'Mytí oken',
-    price: 'od 25 Kč/m²',
-    popupContent: 'Mytí oken provádíme v bytech, rodinných domech a komerčních prostorech. Samozřejmostí je mytí oken včetně rámů, vnitřních i venkovních parapetů. Mytí provádíme profesionální technikou značky UNGER, používáme ekologické mycí prostředky. Veškeré ceny zahrnují dopravu na území Prahy.',
-    features: ['Doprava po Praze zdarma', 'Pojištění proti způsobené škodě'],
+    title: i18n.pricingWindowTitle,
+    price: i18n.pricingWindowPrice,
+    popupContent: i18n.pricingWindowDesc,
+    features: [i18n.pricingWindowFeature1, i18n.pricingWindowFeature2],
   },
   {
-    title: 'Mytí výloh',
-    price: 'od 19 Kč/m²',
-    popupContent: 'Provádíme pravidelné i jednorázové mytí výloh v termínu a cyklu zadaném zákazníkem profesionální technikou značky UNGER. Mytí až do výšky 9 metrů teleskopickými tyčemi. Realizujeme mytí výloh pro obchodní centra, obchodní řetězce, autosalony, čerpací stanice apod. Veškeré ceny zahrnují dopravu na území Prahy.',
-    features: ['Doprava po Praze zdarma', 'Pojištění proti způsobené škodě'],
+    title: i18n.pricingStorefrontTitle,
+    price: i18n.pricingStorefrontPrice,
+    popupContent: i18n.pricingStorefrontDesc,
+    features: [i18n.pricingStorefrontFeature1, i18n.pricingStorefrontFeature2],
   },
   {
-    title: 'Výškové práce',
-    price: 'od 30 Kč/m²',
-    popupContent: 'Čistíme prosklené plochy a těžko přístupná místa horolezeckou technikou. Práce ve výškách realizovaná horolezeckou technikou je podstatně levnější než prováděná za pomoci lešení nebo montážních plošin.',
-    features: ['Doprava po Praze dohodou', 'Pojištění proti způsobené škodě'],
+    title: i18n.pricingHighAltTitle,
+    price: i18n.pricingHighAltPrice,
+    popupContent: i18n.pricingHighAltDesc,
+    features: [i18n.pricingHighAltFeature1, i18n.pricingHighAltFeature2],
   },
 ];
 ---
@@ -40,6 +49,7 @@ const pricing: PricingItem[] = [
           price={item.price}
           popupContent={item.popupContent}
           features={item.features}
+          buttonLabel={i18n.pricingOrderButton}
         />
       ))}
     </div>

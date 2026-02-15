@@ -238,6 +238,12 @@ a:hover {
   color: var(--color-dark);
 }
 
+/* Disable view transition crossfade to prevent layout shake */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
 /* Responsive utility */
 @media (max-width: 767px) {
   .hide-mobile { display: none !important; }

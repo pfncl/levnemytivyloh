@@ -6,7 +6,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://levnemytivyloh.cz',
-  build: { inlineStylesheets: 'always' },
+  build: { inlineStylesheets: 'auto' },
   integrations: [svelte(), sitemap({
     i18n: {
       defaultLocale: 'cs',

@@ -1,0 +1,70 @@
+---
+import PricingCard from './PricingCard.svelte';
+
+interface PricingItem {
+  title: string;
+  price: string;
+  popupContent: string;
+  features: string[];
+}
+
+const pricing: PricingItem[] = [
+  {
+    title: 'Mytí oken',
+    price: 'od 25 Kč/m²',
+    popupContent: 'Mytí oken provádíme v bytech, rodinných domech a komerčních prostorech. Samozřejmostí je mytí oken včetně rámů, vnitřních i venkovních parapetů. Mytí provádíme profesionální technikou značky UNGER, používáme ekologické mycí prostředky. Veškeré ceny zahrnují dopravu na území Prahy.',
+    features: ['Doprava po Praze zdarma', 'Pojištění proti způsobené škodě'],
+  },
+  {
+    title: 'Mytí výloh',
+    price: 'od 19 Kč/m²',
+    popupContent: 'Provádíme pravidelné i jednorázové mytí výloh v termínu a cyklu zadaném zákazníkem profesionální technikou značky UNGER. Mytí až do výšky 9 metrů teleskopickými tyčemi. Realizujeme mytí výloh pro obchodní centra, obchodní řetězce, autosalony, čerpací stanice apod. Veškeré ceny zahrnují dopravu na území Prahy.',
+    features: ['Doprava po Praze zdarma', 'Pojištění proti způsobené škodě'],
+  },
+  {
+    title: 'Výškové práce',
+    price: 'od 30 Kč/m²',
+    popupContent: 'Čistíme prosklené plochy a těžko přístupná místa horolezeckou technikou. Práce ve výškách realizovaná horolezeckou technikou je podstatně levnější než prováděná za pomoci lešení nebo montážních plošin.',
+    features: ['Doprava po Praze dohodou', 'Pojištění proti způsobené škodě'],
+  },
+];
+---
+
+<section class="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-grid">
+      {pricing.map((item) => (
+        <PricingCard
+          client:visible
+          title={item.title}
+          price={item.price}
+          popupContent={item.popupContent}
+          features={item.features}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    padding: var(--section-gap) 15px;
+  }
+
+  .pricing-inner {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

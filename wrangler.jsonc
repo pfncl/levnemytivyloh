@@ -1,0 +1,23 @@
+{
+  "account_id": "a6f73612807840e33437c92d3771f8be",
+  "name": "levne-myti-vyloh",
+  "main": "./dist/_worker.js/index.js",
+  "compatibility_date": "2026-02-13",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "myci-orders",
+      "database_id": "8674af8d-460b-4f53-a559-66888b65aaaf"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

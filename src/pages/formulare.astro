@@ -1,0 +1,382 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { actions } from 'astro:actions';
+import { ADMIN_PASSWORD } from 'astro:env/server';
+
+type Order = {
+  id: number;
+  services: string;
+  company_name: string;
+  email: string;
+  phone: string;
+  street: string;
+  city: string;
+  zip: string;
+  service_date: string | null;
+  notes: string | null;
+  created_at: string;
+};
+
+// Handle action results — redirect on success to clear POST
+const loginResult = Astro.getActionResult(actions.adminLogin);
+const logoutResult = Astro.getActionResult(actions.adminLogout);
+const deleteResult = Astro.getActionResult(actions.adminDeleteOrder);
+
+if ((loginResult && !loginResult.error) || (logoutResult && !logoutResult.error) || (deleteResult && !deleteResult.error)) {
+  return Astro.redirect('/formulare');
+}
+
+// Check session
+async function hashToken(password: string): Promise<string> {
+  const data = new TextEncoder().encode(password + ':myci-admin-salt');
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+const expectedToken = await hashToken(ADMIN_PASSWORD);
+const authenticated = Astro.cookies.get('admin_session')?.value === expectedToken;
+
+let orders: Order[] = [];
+if (authenticated) {
+  const db = Astro.locals.runtime.env.DB;
+  const result = await db.prepare('SELECT * FROM orders ORDER BY created_at DESC').all<Order>();
+  orders = result.results;
+}
+
+const loginError = loginResult?.error?.message || '';
+---
+
+<BaseLayout title="Formuláře – Myči.CZ" description="Správa objednávek">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <div class="admin-page">
+    {authenticated ? (
+      <div class="admin-content">
+        <div class="admin-header">
+          <h1>Přijaté objednávky ({orders.length})</h1>
+          <form method="POST" action={actions.adminLogout}>
+            <button type="submit" class="btn-logout">Odhlásit se</button>
+          </form>
+        </div>
+
+        {orders.length === 0 ? (
+          <p class="empty">Zatím žádné objednávky.</p>
+        ) : (
+          <div class="orders-list">
+            {orders.map((order) => (
+              <details class="order-card">
+                <summary class="order-summary">
+                  <span class="order-id">#{order.id}</span>
+                  <span class="order-company">{order.company_name}</span>
+                  <time>{new Date(order.created_at + 'Z').toLocaleString('cs-CZ', { timeZone: 'Europe/Prague' })}</time>
+                </summary>
+                <div class="order-details">
+                  <div class="order-row">
+                    <strong>Služby:</strong> {order.services}
+                  </div>
+                  <div class="order-row">
+                    <strong>E-mail:</strong> <a href={`mailto:${order.email}`}>{order.email}</a>
+                  </div>
+                  <div class="order-row">
+                    <strong>Telefon:</strong> <a href={`tel:${order.phone}`}>{order.phone}</a>
+                  </div>
+                  <div class="order-row">
+                    <strong>Adresa:</strong> {order.street}, {order.city} {order.zip}
+                  </div>
+                  {order.service_date && (
+                    <div class="order-row">
+                      <strong>Datum:</strong> {order.service_date}
+                    </div>
+                  )}
+                  {order.notes && (
+                    <div class="order-row">
+                      <strong>Poznámky:</strong> {order.notes}
+                    </div>
+                  )}
+                  <form method="POST" action={actions.adminDeleteOrder} class="order-delete" onsubmit="return confirm('Opravdu smazat objednávku?')">
+                    <input type="hidden" name="orderId" value={order.id} />
+                    <button type="submit" class="btn-delete">Smazat</button>
+                  </form>
+                </div>
+              </details>
+            ))}
+          </div>
+        )}
+      </div>
+    ) : (
+      <div class="login-box">
+        <h1>Přihlášení</h1>
+        {loginError && <p class="login-error">{loginError}</p>}
+        <form method="POST" action={actions.adminLogin}>
+          <label for="password">Heslo</label>
+          <input type="password" id="password" name="password" required autofocus />
+          <div class="turnstile-field">
+            <div id="turnstile-container"></div>
+            <p id="turnstile-error" class="login-error" style="display:none">Ověření nebylo dokončeno.</p>
+          </div>
+          <button type="submit" class="btn-login">Přihlásit se</button>
+        </form>
+        <script is:inline>
+          (function() {
+            var loaded = false;
+            var turnstileReady = false;
+            function loadTurnstile() {
+              if (loaded) return;
+              loaded = true;
+              var s = document.createElement('script');
+              s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit';
+              s.async = true;
+              document.head.appendChild(s);
+            }
+            window.onTurnstileLoad = function() {
+              var el = document.getElementById('turnstile-container');
+              if (el) turnstile.render(el, {
+                sitekey: '0x4AAAAAACb2orZs8ymvai7p',
+                theme: 'light',
+                language: 'cs',
+                callback: function() { turnstileReady = true; },
+                'expired-callback': function() { turnstileReady = false; },
+                'error-callback': function() { turnstileReady = false; },
+              });
+            };
+            var pw = document.getElementById('password');
+            if (pw) pw.addEventListener('input', loadTurnstile, { once: true });
+            var form = document.querySelector('.login-box form');
+            if (form) form.addEventListener('submit', function(e) {
+              var errEl = document.getElementById('turnstile-error');
+              if (!turnstileReady) {
+                e.preventDefault();
+                if (errEl) errEl.style.display = 'block';
+              } else if (errEl) {
+                errEl.style.display = 'none';
+              }
+            });
+          })();
+        </script>
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .admin-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 60vh;
+  }
+
+  /* Login */
+  .login-box {
+    max-width: 360px;
+    margin: 80px auto;
+    padding: 30px;
+    border: 2px solid #4FA4DB;
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  .login-box h1 {
+    font-size: 22px;
+    margin: 0 0 20px;
+    color: #333;
+    text-align: center;
+  }
+
+  .login-box label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 6px;
+  }
+
+  .login-box input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+
+  .turnstile-field {
+    margin-bottom: 16px;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 12px;
+    background: #4FA4DB;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .btn-login:hover {
+    background: #3d8ec5;
+  }
+
+  .login-error {
+    color: #dd3333;
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  /* Admin content */
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .admin-header h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+  }
+
+  .btn-logout {
+    padding: 8px 16px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #555;
+  }
+
+  .btn-logout:hover {
+    background: #ddd;
+  }
+
+  .empty {
+    color: #888;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 16px;
+  }
+
+  /* Order cards */
+  .orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .order-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  .order-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .order-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .order-summary::before {
+    content: '▸';
+    font-size: 12px;
+    color: #aaa;
+    transition: transform 0.15s;
+  }
+
+  .order-card[open] > .order-summary::before {
+    transform: rotate(90deg);
+  }
+
+  .order-id {
+    font-weight: 600;
+    color: #4FA4DB;
+  }
+
+  .order-company {
+    flex: 1;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .order-summary time {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .order-details {
+    padding: 0 20px 16px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .order-row {
+    padding: 4px 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .order-row strong {
+    color: #555;
+    min-width: 100px;
+    display: inline-block;
+  }
+
+  .order-row a {
+    color: #4FA4DB;
+    text-decoration: none;
+  }
+
+  .order-row a:hover {
+    text-decoration: underline;
+  }
+
+  .order-delete {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+    text-align: right;
+  }
+
+  .btn-delete {
+    padding: 6px 14px;
+    background: #fff;
+    color: #cc3333;
+    border: 1px solid #cc3333;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .btn-delete:hover {
+    background: #cc3333;
+    color: #fff;
+  }
+
+  @media (max-width: 600px) {
+    .admin-page {
+      padding: 20px 12px;
+    }
+
+    .order-card {
+      padding: 12px;
+    }
+
+    .admin-header h1 {
+      font-size: 20px;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+const description = 'Jsme úklidová firma působící na trhu servisních úklidů, mytí oken a výloh již dvacet let. Naši profesionální pracovníci jsou vyškoleni na mytí běžně znečistěných prosklených ploch, mytí výloh a oken po malířských, řemeslnických, stavebních i jiných pracích, odstraňujeme reklamní polepy, loga apod. Samozřejmostí je mytí oken včetně rámů, vnitřních i venkovních parapetů. Mytí provádíme profesionální technikou značky UNGER, používáme ekologické mycí prostředky. Ke každé zakázce přistupujeme s nejvyšší zodpovědností, naši pracovníci jsou dobře pojištěni na případnou škodu způsobenou při práci.';
+---
+
+<section class="about">
+  <div class="about-inner">
+    <h2 class="about-title">Představení firmy</h2>
+    <p class="about-text">{description}</p>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: var(--section-gap) 15px 0;
+  }
+
+  .about-inner {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .about-title {
+    font-size: 28px;
+    color: #13151a;
+    font-weight: 700;
+    margin-bottom: 0.8em;
+  }
+
+  .about-text {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .about-title {
+      font-size: 24px;
+    }
+
+    .about-text {
+      font-size: 15px;
+    }
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+import { SEO } from 'astro-seo';
+import { ClientRouter } from 'astro:transitions';
+import type { Locale } from '../i18n/translations';
+import { t } from '../i18n/translations';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: Locale;
+}
+
+const { title, lang = 'cs' } = Astro.props;
+const i18n = t(lang);
+const { description = i18n.seoDefaultDescription } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+
+  <SEO
+    title={title}
+    description={description}
+    openGraph={{
+      basic: {
+        title: title,
+        type: 'website',
+        image: '/images/logo_levnemytivyloh.png',
+      },
+      optional: {
+        locale: i18n.seoLocale,
+        siteName: 'Levné mytí výloh',
+      },
+    }}
+    extend={{
+      link: [
+        { rel: 'icon', href: '/images/favicon_levnemytivyloh.png', sizes: '32x32' },
+        { rel: 'apple-touch-icon', href: '/images/favicon_levnemytivyloh.png' },
+      ],
+    }}
+  />
+
+  <ClientRouter />
+  <script is:inline src="https://elfsightcdn.com/platform.js" async></script>
+  <slot name="head" />
+</head>
+<body>
+  <div class="body-wrap">
+    <slot />
+  </div>
+  <script>
+    document.addEventListener('astro:page-load', () => {
+      if (window.eapps) {
+        window.eapps.initWidgets();
+      }
+    });
+  </script>
+</body>
+</html>

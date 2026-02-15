@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.svelte';
+import OrderFormModal from '../components/OrderFormModal.svelte';
+
+const lang = 'cs' as const;
+---
+
+<BaseLayout title="Zásady ochrany osobních údajů – Myči.CZ" lang={lang}>
+  <Header lang={lang} />
+  <main>
+    <div class="content-wrap content-page">
+      <h1>Zásady ochrany osobních údajů</h1>
+
+      <h2>Kdo jsme</h2>
+      <p>Naše webová adresa je: <a href="https://levnemytivyloh.cz">https://levnemytivyloh.cz</a>.</p>
+
+      <h2>Jaké shromažďujeme osobní údaje a proč je shromažďujeme</h2>
+
+      <h3>Kontaktní formuláře</h3>
+      <p>Prostřednictvím objednávkového formuláře na našem webu shromažďujeme vaše jméno, telefonní číslo, e-mailovou adresu a adresu pro realizaci služby. Tyto údaje používáme výhradně ke zpracování a vyřízení vaší objednávky.</p>
+
+      <h3>Cookies</h3>
+      <p>Náš web používá technické cookies nezbytné pro správné fungování stránek. Dále využíváme službu Cloudflare Turnstile pro ochranu formulářů proti spamu, která může nastavit vlastní cookies.</p>
+
+      <h3>Vložený obsah z dalších webů</h3>
+      <p>Stránky mohou obsahovat vložený obsah (například videa, obrázky, mapy atd.). Vložený obsah z jiných webových stránek se chová stejným způsobem, jako kdybyste navštívili příslušný web přímo.</p>
+      <p>Tyto webové stránky mohou shromažďovat data o vás, používat soubory cookies, vkládat další sledování od třetích stran a sledovat vaši interakci s tímto vloženým obsahem.</p>
+
+      <h2>S kým sdílíme vaše údaje</h2>
+      <p>Vaše osobní údaje nesdílíme s třetími stranami s výjimkou případů, kdy je to nezbytné pro poskytnutí služby (např. zpracování plateb) nebo kdy to vyžaduje zákon.</p>
+
+      <h2>Jak dlouho uchováváme vaše údaje</h2>
+      <p>Údaje z objednávek uchováváme po dobu nezbytnou pro splnění zákonných povinností (zejména účetních a daňových), obvykle po dobu 10 let od uskutečnění objednávky.</p>
+
+      <h2>Jaká máte práva</h2>
+      <p>Máte právo požádat o přístup k osobním údajům, které o vás uchováváme, jejich opravu nebo výmaz. Můžete také požádat o omezení zpracování nebo podat námitku proti zpracování vašich osobních údajů. Pro uplatnění těchto práv nás kontaktujte prostřednictvím kontaktních údajů na našem webu.</p>
+
+      <h2>Kam posíláme vaše data</h2>
+      <p>Vaše data mohou být zpracována prostřednictvím služeb třetích stran (např. Cloudflare), jejichž servery se mohou nacházet mimo Evropskou unii. Tyto služby splňují požadavky GDPR na ochranu osobních údajů.</p>
+    </div>
+  </main>
+  <Footer />
+
+  <OrderFormModal client:idle lang={lang} />
+  <CookieConsent client:idle lang={lang} />
+</BaseLayout>

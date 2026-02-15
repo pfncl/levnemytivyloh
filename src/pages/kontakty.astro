@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import WeatherWidget from '../components/WeatherWidget.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.svelte';
+import { t } from '../i18n/translations';
+
+const lang = 'cs' as const;
+const i18n = t(lang);
+const title = 'Kontakty – Levné mytí výloh – Praha – Úklidové a čistící práce';
+---
+
+<BaseLayout title={title} description={i18n.seoDefaultDescription} lang={lang}>
+  <Header lang={lang} currentPage="kontakty" />
+  <main class="contacts-page">
+    <div class="contacts-inner">
+      <div class="contacts-layout">
+        <div class="contacts-content">
+          <div class="contact-card">
+            <div class="contact-bubble">
+              <p>Kontaktujte mne pro technické a provozní záležitosti</p>
+            </div>
+            <div class="contact-person">
+              <img src="/images/david-faustus.png" alt="David Faustus" width="60" height="60" loading="lazy" class="contact-avatar">
+              <div class="contact-info">
+                <strong class="contact-name">David Faustus</strong>
+                <p class="contact-detail">mail: <a href="mailto:david@levnemytivyloh.cz">david@levnemytivyloh.cz</a></p>
+                <p class="contact-detail">tel: <a href="tel:775351116">775 351 116</a></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-bubble">
+              <p>Kontaktujte mne pro obchodní a marketingové záležitosti</p>
+            </div>
+            <div class="contact-person">
+              <img src="/images/daniel-urman.png" alt="Daniel Urman" width="60" height="60" loading="lazy" class="contact-avatar">
+              <div class="contact-info">
+                <strong class="contact-name">Daniel Urman</strong>
+                <p class="contact-detail">mail: <a href="mailto:daniel@levnemytivyloh.cz">daniel@levnemytivyloh.cz</a></p>
+                <p class="contact-detail">tel: <a href="tel:608820647">608 820 647</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="contacts-sidebar">
+          <a href="/images/letak.pdf" target="_blank" rel="noopener">
+            <img src="/images/letak-preview.jpg" alt="Alabastr Clean - Úklidový servis" width="248" height="503" loading="lazy" class="sidebar-brochure">
+          </a>
+          <p class="sidebar-label">Stáhněte si náš leták</p>
+          <div class="sidebar-weather">
+            <WeatherWidget />
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <Footer />
+
+  <CookieConsent client:idle lang={lang} />
+</BaseLayout>
+
+<style>
+  .contacts-page {
+    padding: var(--section-gap) 15px;
+  }
+
+  .contacts-inner {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .contacts-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3em;
+    align-items: start;
+  }
+
+  .contacts-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+  }
+
+  .contact-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .contact-bubble {
+    background: #f5f7fa;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+  }
+
+  .contact-bubble p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .contact-person {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .contact-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .contact-name {
+    display: block;
+    font-size: 18px;
+    color: #222;
+    margin-bottom: 4px;
+  }
+
+  .contact-detail {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .contact-detail a {
+    color: #50a3df;
+    text-decoration: none;
+  }
+
+  .contact-detail a:hover {
+    text-decoration: underline;
+  }
+
+  .sidebar-brochure {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+  }
+
+  .sidebar-brochure:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebar-label {
+    font-size: 14px;
+    color: #888;
+    margin-top: 0.5em;
+    text-align: center;
+  }
+
+  .sidebar-weather {
+    margin-top: 2em;
+  }
+
+  @media (max-width: 767px) {
+    .contacts-layout {
+      grid-template-columns: 1fr;
+      gap: 2em;
+    }
+
+    .contacts-sidebar {
+      text-align: center;
+    }
+
+    .sidebar-brochure {
+      max-width: 250px;
+    }
+  }
+</style>

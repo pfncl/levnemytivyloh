@@ -1,0 +1,30 @@
+{
+  "name": "levnemytivyloh",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/svelte": "^7.2.5",
+    "astro": "^5.17.1",
+    "astro-seo": "^1.1.0",
+    "resend": "^6.9.2",
+    "svelte": "^5.50.3",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
+    ]
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260213.0"
+  }
+}

@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import HeroSection from '../components/HeroSection.astro';
+import AboutSection from '../components/AboutSection.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+import OrderFormModal from '../components/OrderFormModal.svelte';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.svelte';
+import { t } from '../i18n/translations';
+
+const lang = 'cs' as const;
+const i18n = t(lang);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Levné mytí výloh – Alabastr Clean, s.r.o.',
+  description: 'Profesionální úklidová firma specializující se na mytí oken, výloh a rozlehlých prosklených ploch v Praze a okolí. Nabízíme pravidelné i jednorázové služby pro obchody, restaurace, kanceláře i bytové domy. Působíme na trhu servisních úklidů již 20 let.',
+  url: 'https://levnemytivyloh.cz',
+  logo: 'https://levnemytivyloh.cz/images/logo_levnemytivyloh.png',
+  telephone: ['+420775351116', '+420608820647'],
+  email: 'info@levnemytivyloh.cz',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Praha',
+    addressCountry: 'CZ',
+  },
+  areaServed: {
+    '@type': 'GeoCircle',
+    geoMidpoint: {
+      '@type': 'GeoCoordinates',
+      latitude: 50.0755,
+      longitude: 14.4378,
+    },
+    geoRadius: '50000',
+  },
+  priceRange: '$$',
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '07:00',
+    closes: '18:00',
+  },
+  sameAs: [
+    'https://www.facebook.com/pages/Alabastr-Clean/537888146306354',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Mycí služby',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Mytí výloh',
+          description: 'Pravidelné i jednorázové mytí výloh profesionální technikou značky UNGER. Od 19 Kč/m².',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Mytí oken',
+          description: 'Mytí oken v bytech, rodinných domech a komerčních prostorech včetně rámů a parapetů. Od 25 Kč/m².',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Výškové práce',
+          description: 'Čištění prosklených ploch a těžko přístupných míst horolezeckou technikou. Od 30 Kč/m².',
+        },
+      },
+    ],
+  },
+};
+---
+
+<BaseLayout title={i18n.seoTitle} description={i18n.seoDescription} lang={lang}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header lang={lang} currentPage="home" />
+  <main>
+    <HeroSection />
+    <AboutSection />
+    <ServicesSection />
+  </main>
+  <Footer />
+
+  <OrderFormModal client:idle lang={lang} />
+  <CookieConsent client:idle lang={lang} />
+</BaseLayout>

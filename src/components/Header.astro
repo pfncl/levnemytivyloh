@@ -1,0 +1,214 @@
+---
+import type { Locale } from '../i18n/translations';
+import { t } from '../i18n/translations';
+import MobileMenu from './MobileMenu.svelte';
+
+interface Props {
+  lang?: Locale;
+  currentPage?: string;
+}
+
+const { lang = 'cs', currentPage = '' } = Astro.props;
+const i18n = t(lang);
+
+const navItems = [
+  { href: '/', label: 'O nás', id: 'home' },
+  { href: '/objednavkovy-formular/', label: 'Objednávkový formulář', id: 'formular' },
+  { href: '/portfolio-sluzeb/', label: 'Naše reference', id: 'reference' },
+  { href: '/kontakty/', label: 'Kontakty', id: 'kontakty' },
+];
+---
+
+<header class="header">
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-bar-left">
+        <span class="icon-phone top-bar-icon"></span>
+        <span>tel: <a href="tel:775351116">775 351 116</a> nebo tel: <a href="tel:608820647">608 820 647</a></span>
+        <span class="top-bar-separator"></span>
+        <span class="icon-paper-plane-light top-bar-icon"></span>
+        <a href="mailto:info@levnemytivyloh.cz">info@levnemytivyloh.cz</a>
+      </div>
+      <div class="top-bar-right">
+        <a href="https://www.facebook.com/pages/Alabastr-Clean/537888146306354" class="top-bar-social fb" target="_blank" rel="noopener nofollow" aria-label="Facebook">
+          <span class="icon-iconmonstr-facebook-1"></span>
+        </a>
+        <a href="mailto:info@levnemytivyloh.cz" class="top-bar-social mail" aria-label="E-mail">
+          <span class="icon-paper-plane-light"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-main">
+    <div class="header-row">
+      <div class="header-logo">
+        <a href="/">
+          <img src="/images/logo_levnemytivyloh.png" alt="Levné mytí výloh – Praha – Úklidové a čistící práce" width="193" height="73">
+        </a>
+      </div>
+
+      <nav class="header-nav hide-mobile">
+        <ul>
+          {navItems.map((item) => (
+            <li class:list={[{ active: currentPage === item.id }]}>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="header-mobile show-mobile-only">
+        <MobileMenu client:idle lang={lang} />
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .top-bar {
+    background-color: var(--color-dark);
+    color: #ccc;
+    font-size: 12px;
+    padding: 6px 0;
+  }
+
+  .top-bar-inner {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .top-bar-left a {
+    color: #ccc;
+    text-decoration: none;
+  }
+
+  .top-bar-left a:hover {
+    color: #fff;
+  }
+
+  .top-bar-icon {
+    font-size: 14px;
+    margin-right: 2px;
+  }
+
+  .top-bar-separator {
+    display: inline-block;
+    width: 12px;
+  }
+
+  .top-bar-right {
+    display: flex;
+    gap: 6px;
+  }
+
+  .top-bar-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    color: #ccc;
+    background: rgba(255,255,255,0.1);
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .top-bar-social:hover {
+    color: #fff;
+  }
+
+  .top-bar-social.fb:hover {
+    background: #1877F2;
+  }
+
+  .top-bar-social.mail:hover {
+    background: #dd4b39;
+  }
+
+  .header-main {
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .header-row {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-logo a {
+    display: inline-block;
+  }
+
+  .header-logo img {
+    max-width: 193px;
+    height: auto;
+    padding: 23px 0 27px;
+  }
+
+  .header-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0;
+  }
+
+  .header-nav li a {
+    display: block;
+    padding: 1em 1.2em;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+
+  .header-nav li a:hover,
+  .header-nav li.active a {
+    color: var(--color-primary-border);
+  }
+
+  .header-mobile {
+    margin-left: auto;
+  }
+
+  @media (max-width: 900px) {
+    .top-bar-left {
+      font-size: 11px;
+    }
+    .header-nav li a {
+      padding: 1em 0.7em;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .top-bar {
+      display: none;
+    }
+    .header-logo img {
+      max-width: 150px;
+      padding: 15px 0;
+    }
+  }
+</style>

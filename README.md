@@ -1,4 +1,4 @@
-# Myči.CZ — Astro 5 + Svelte 5 (Cloudflare Workers)
+# Levnemytivyloh.CZ — Astro 5 + Svelte 5 (Cloudflare Workers)
 
 Web profesionálních mycích služeb firmy Alabastr Clean, s.r.o. Konverze z WordPress (Custom theme + Visual Composer) na moderní Astro 5 se Svelte 5 komponentami (runes). Deployuje se na **Cloudflare Workers** s custom doménou `myci.cz`.
 

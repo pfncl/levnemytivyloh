@@ -37,7 +37,7 @@
 
 html {
   scroll-behavior: smooth;
-  scrollbar-gutter: stable;
+  overflow-y: scroll;
 }
 
 /* UseAnyFont override: alabastr applied globally (same as WordPress original) */

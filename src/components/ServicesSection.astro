@@ -42,7 +42,7 @@ const pricing: PricingItem[] = [
 <section class="pricing">
   <div class="pricing-inner">
     <div class="pricing-grid">
-      {pricing.map((item) => (
+      {pricing.map((item, i) => (
         <PricingCard
           client:visible
           title={item.title}
@@ -50,6 +50,7 @@ const pricing: PricingItem[] = [
           popupContent={item.popupContent}
           features={item.features}
           buttonLabel={i18n.pricingOrderButton}
+          featured={i === 1}
         />
       ))}
     </div>

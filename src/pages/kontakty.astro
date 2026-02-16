@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import WeatherWidget from '../components/WeatherWidget.astro';
+import ContactForm from '../components/ContactForm.svelte';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.svelte';
 import { t } from '../i18n/translations';
@@ -43,6 +44,10 @@ const title = 'Kontakty – Levné mytí výloh – Praha – Úklidové a čist
                 <p class="contact-detail">tel: <a href="tel:608820647">608 820 647</a></p>
               </div>
             </div>
+          </div>
+
+          <div class="contacts-form">
+            <ContactForm client:idle lang={lang} />
           </div>
         </div>
 
@@ -140,6 +145,13 @@ const title = 'Kontakty – Levné mytí výloh – Praha – Úklidové a čist
 
   .contact-detail a:hover {
     text-decoration: underline;
+  }
+
+  .contacts-form {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   }
 
   .sidebar-brochure {

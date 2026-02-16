@@ -131,6 +131,99 @@ export const server = {
     },
   }),
 
+  sendContact: defineAction({
+    accept: 'json',
+    input: z.object({
+      name: z.string().min(1, 'Jméno je povinné.'),
+      email: z.string().email('Neplatný e-mail.'),
+      phone: z.string().optional(),
+      message: z.string().min(1, 'Zpráva je povinná.'),
+      honeypot: z.string().optional(),
+      turnstileToken: z.string().min(1, 'Ověření nebylo dokončeno.'),
+    }),
+    handler: async (input, context) => {
+      if (input.honeypot) {
+        return { success: true };
+      }
+
+      const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          secret: TURNSTILE_SECRET_KEY,
+          response: input.turnstileToken,
+        }),
+      });
+      const turnstileResult = await turnstileResponse.json() as { success: boolean };
+      if (!turnstileResult.success) {
+        throw new ActionError({
+          code: 'FORBIDDEN',
+          message: 'Ověření Turnstile selhalo.',
+        });
+      }
+
+      const resend = new Resend(RESEND_API_KEY);
+
+      const htmlBody = `
+        <h2>Kontaktní formulář – Levnemytivyloh.CZ</h2>
+        <table style="border-collapse:collapse;width:100%;max-width:600px;">
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Jméno</td>
+              <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(input.name)}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-mail</td>
+              <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(input.email)}</td></tr>
+          ${input.phone ? `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Telefon</td>
+              <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(input.phone)}</td></tr>` : ''}
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Zpráva</td>
+              <td style="padding:8px;border:1px solid #ddd;">${escapeHtml(input.message)}</td></tr>
+        </table>
+      `;
+
+      const { error } = await resend.batch.send([
+        {
+          from: 'Levnemytivyloh.CZ Web <formular@levnemytivyloh.cz>',
+          to: [ORDER_EMAIL],
+          replyTo: input.email,
+          subject: `Kontaktní formulář: ${input.name}`,
+          html: htmlBody,
+        },
+        {
+          from: 'Levnemytivyloh.CZ <formular@levnemytivyloh.cz>',
+          to: [input.email],
+          subject: 'Potvrzení zprávy - Levnemytivyloh.CZ',
+          html: `
+            <h2>Děkujeme za Vaši zprávu!</h2>
+            <p>Dobrý den,</p>
+            <p>potvrzujeme přijetí Vaší zprávy. Zde je shrnutí:</p>
+            ${htmlBody}
+            <p>Budeme Vás co nejdříve kontaktovat.</p>
+            <p>S pozdravem,<br>Tým Levnemytivyloh.CZ</p>
+          `,
+        },
+      ]);
+
+      if (error) {
+        throw new ActionError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+
+      // Save to D1 database
+      const db = context.locals.runtime.env.DB;
+      await db.prepare(
+        `INSERT INTO contacts (name, email, phone, message)
+         VALUES (?, ?, ?, ?)`
+      ).bind(
+        input.name,
+        input.email,
+        input.phone || null,
+        input.message,
+      ).run();
+
+      return { success: true };
+    },
+  }),
+
   adminLogin: defineAction({
     accept: 'form',
     input: z.object({

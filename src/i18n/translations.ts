@@ -82,6 +82,18 @@ const translations = {
     months: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],
     serviceOptions: ['Mytí výloh', 'Mytí oken', 'Výškové práce', 'Stop pavoukům'],
 
+    // Contact form
+    contactFormTitle: 'Napište nám',
+    contactFormName: 'Vaše jméno',
+    contactFormEmail: 'E-mail',
+    contactFormPhone: 'Telefon',
+    contactFormMessage: 'Vaše zpráva',
+    contactFormSubmit: 'Odeslat zprávu',
+    contactFormSubmitting: 'Odesílám...',
+    contactFormSuccessTitle: 'Děkujeme za Vaši zprávu!',
+    contactFormSuccessText: 'Budeme Vás co nejdříve kontaktovat.',
+    contactFormErrorText: 'Nepodařilo se odeslat zprávu. Zkuste to prosím znovu.',
+
     // Cookie consent
     cookieTitle: 'Spravovat Souhlas s cookies',
     cookieText: 'Abychom poskytli co nejlepší služby, používáme k ukládání a/nebo přístupu k informacím o zařízení, technologie jako jsou soubory cookies. Souhlas s těmito technologiemi nám umožní zpracovávat údaje, jako je chování při procházení nebo jedinečná ID na tomto webu.',
@@ -187,6 +199,18 @@ const translations = {
     privacyPolicyUrl: '/en/privacy-policy',
     months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     serviceOptions: ['Window display cleaning', 'Window cleaning', 'High-altitude work', 'Spider removal'],
+
+    // Contact form
+    contactFormTitle: 'Get in Touch',
+    contactFormName: 'Your name',
+    contactFormEmail: 'Email',
+    contactFormPhone: 'Phone',
+    contactFormMessage: 'Your message',
+    contactFormSubmit: 'Send message',
+    contactFormSubmitting: 'Sending...',
+    contactFormSuccessTitle: 'Thank you for your message!',
+    contactFormSuccessText: 'We will contact you as soon as possible.',
+    contactFormErrorText: 'Failed to send the message. Please try again.',
 
     // Cookie consent
     cookieTitle: 'Manage Cookie Consent',

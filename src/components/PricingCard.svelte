@@ -5,12 +5,13 @@
     popupContent: string;
     features: string[];
     buttonLabel?: string;
+    featured?: boolean;
   }
 
-  let { title, price, popupContent, features, buttonLabel = 'Objednejte teď' }: Props = $props();
+  let { title, price, popupContent, features, buttonLabel = 'Objednejte teď', featured = false }: Props = $props();
 </script>
 
-<div class="pricing-card">
+<div class="pricing-card" class:featured>
   <h3 class="pricing-title">{title}</h3>
   <p class="pricing-price">{price}</p>
   <button type="button" class="btn-order" data-open-modal="order-form">{buttonLabel}</button>
@@ -38,6 +39,20 @@
 
   .pricing-card:hover {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .pricing-card.featured {
+    padding: 38px 36px;
+    border: 3px solid #40A4DB;
+    box-shadow: 0 4px 20px rgba(80, 163, 223, 0.12);
+  }
+
+  .pricing-card.featured .pricing-title {
+    font-size: 24px;
+  }
+
+  .pricing-card.featured .pricing-price {
+    font-size: 16px;
   }
 
   .pricing-title {
